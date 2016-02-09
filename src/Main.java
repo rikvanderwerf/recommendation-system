@@ -1,13 +1,19 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rikvanderwerf on 9-2-16.
  */
 public class Main {
+
+    static UserPreferences<Integer, List<Preference>> userPreferences = new UserPreferences<Integer, List<Preference>>(
+            new ArrayList<Preference>()
+    );
 
     public static void main(String[] args) {
         try {
@@ -15,6 +21,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
+        System.out.println(userPreferences.get(1));
 
     }
 
@@ -34,7 +41,6 @@ public class Main {
     }
 
     private static void buildDict(User user, Preference preference) {
-
-
+        userPreferences.putList(user.id, preference);
     }
 }
