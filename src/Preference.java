@@ -3,4 +3,7 @@
  */
 public class Preference {
 
+    float rating;
+    int subjectID;
+
 }
