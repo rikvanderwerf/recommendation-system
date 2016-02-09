@@ -18,14 +18,23 @@ public class Main {
 
     }
 
-    public static void openFile(String path) throws IOException {
+    private static void openFile(String path) throws IOException {
         FileReader fr = new FileReader(path);
         BufferedReader textReader = new BufferedReader(fr);
 
         String line;
         while ((line = textReader.readLine()) != null) {
-            System.out.println(line);
+            String[] data = line.split(",");
+            buildDict(new User(Integer.parseInt(data[0])),
+                      new Preference(Float.parseFloat(data[2]),
+                                     Integer.parseInt(data[1]))
+            );
         }
         textReader.close();
+    }
+
+    private static void buildDict(User user, Preference preference) {
+
+
     }
 }

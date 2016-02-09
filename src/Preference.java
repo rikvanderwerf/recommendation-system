@@ -4,6 +4,10 @@
 public class Preference {
 
     float rating;
-    int subjectID;
+    int subject;
 
+    public Preference(float rating, int subject) {
+        this.rating = rating;
+        this.subject = subject;
+    }
 }
