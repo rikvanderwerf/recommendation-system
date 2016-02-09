@@ -1,5 +1,5 @@
 /**
- * Created by rikvanderwerf on 9-2-16.
+ * Created by robinsiep on 9-2-16.
  */
 public class User {
 
