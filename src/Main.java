@@ -2,9 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rikvanderwerf on 9-2-16.
@@ -33,7 +31,7 @@ public class Main {
         while ((line = textReader.readLine()) != null) {
             String[] data = line.split(",");
             buildDict(new User(Integer.parseInt(data[0])),
-                      new Preference(Float.parseFloat(data[2]),
+                      new Preference(Double.parseDouble(data[2]),
                                      Integer.parseInt(data[1]))
             );
         }

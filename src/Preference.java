@@ -3,10 +3,10 @@
  */
 public class Preference {
 
-    float rating;
+    double rating;
     int subject;
 
-    public Preference(float rating, int subject) {
+    public Preference(double rating, int subject) {
         this.rating = rating;
         this.subject = subject;
     }
