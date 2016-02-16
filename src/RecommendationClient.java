@@ -42,7 +42,7 @@ public class RecommendationClient {
                     continue;
                 }
 
-                // sort the similarity list based on similarity value
+                // sort the similarity list based on similarity value. Only if mutated!
                 Collections.sort(similarityList, new Comparator<List<Double>>()
                 {
                     public int compare(List<Double> o1, List<Double> o2)
