@@ -6,7 +6,7 @@ import java.util.*;
 public class RecommendationClient {
 
     ISimilarityInterface similarityAlgoritm;
-    SortedMap<Integer, Double> simularityMapping;
+    List<List<Double>> similarityList;
 
     public RecommendationClient(ISimilarityInterface similarityAlgoritm) {
         this.similarityAlgoritm = similarityAlgoritm;
@@ -29,14 +29,28 @@ public class RecommendationClient {
             double similarity = similarityAlgoritm.calculate(targetUserPreferences, userPreference);
 
             if (similarity >= minimumSimularity) {
-                if (simularityMapping.size() < maximumNeighbourListSize) {
-                    simularityMapping.put((Integer) keyValue.getKey(), similarity);
-                } else {
-                    
 
+                // to do : check if compared user actually has a new preference compared to the target user.
+
+                if (similarityList.size() < maximumNeighbourListSize) {
+                    similarityList.add(Arrays.asList((Double) keyValue.getKey(), similarity));
+
+                } else if(similarityList.get(0).get(1) < similarity) {
+                    similarityList.set(0, Arrays.asList((Double) keyValue.getKey(), similarity));
+
+                } else{
+                    continue;
                 }
+
+                // sort the similarity list based on similarity value
+                Collections.sort(similarityList, new Comparator<List<Double>>()
+                {
+                    public int compare(List<Double> o1, List<Double> o2)
+                    {
+                        return o1.get(1).compareTo(o2.get(1));
+                    }
+                });
             }
-            simularityMapping.put()
 
             userPreferencerIterator.remove();
 
