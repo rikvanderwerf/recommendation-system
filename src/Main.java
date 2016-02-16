@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,8 +10,8 @@ import java.util.List;
  */
 public class Main {
 
-    static UserPreferences<Integer, List<Preference>> userPreferences = new UserPreferences<Integer, List<Preference>>(
-            new ArrayList<Preference>()
+    static UserPreferences<Integer, HashMap<Integer, Preference>> userPreferences = new UserPreferences<Integer, HashMap<Integer, Preference>>(
+            new HashMap<Integer, Preference>()
     );
 
     public static void main(String[] args) {
