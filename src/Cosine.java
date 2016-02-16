@@ -2,10 +2,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class Euclidedean implements ISimilarityInterface{
+public class Cosine implements ISimilarityInterface{
     public double calculate(HashMap<Integer, Preference> targetUser, HashMap<Integer, Preference> compareUser){
         Iterator targetPreferences = targetUser.entrySet().iterator();
-        float similarity = 0;
+        double similarity;
+
+        double sumMultiplicationRatings = 0;
+        double targetPreferencePowSum = 0;
+        double comparePreferencePowSum = 0;
 
         while (targetPreferences.hasNext()){
             Map.Entry keyValue = (Map.Entry)targetPreferences.next();
@@ -13,15 +17,18 @@ public class Euclidedean implements ISimilarityInterface{
             Preference targetPreference = (Preference) keyValue.getValue();
             Preference comparePreference = compareUser.get(targetPreference.subject);
 
-            if (comparePreference == null) {
+            if (comparePreference == null){
                 continue;
             }
 
-            similarity += Math.pow((targetPreference.rating - comparePreference.rating), 2);
+            sumMultiplicationRatings += (targetPreference.rating * comparePreference.rating);
+            targetPreferencePowSum += Math.pow(targetPreference.rating, 2);
+            comparePreferencePowSum += Math.pow(comparePreference.rating, 2);
 
             targetPreferences.remove();
         }
 
-        return Math.sqrt(similarity);
+        similarity = sumMultiplicationRatings / (targetPreferencePowSum * comparePreferencePowSum);
+        return similarity;
     }
 }

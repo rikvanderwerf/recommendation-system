@@ -30,6 +30,8 @@ public class Pearson implements ISimilarityInterface{
             comparePowSum += Math.pow(comparePreference.rating, 2);
 
             iterationSum += (targetPreference.rating * comparePreference.rating);
+
+            targetPreferences.remove();
         }
 
         totalSum = (targetRatingSum + compareRatingSum) / targetUser.size();

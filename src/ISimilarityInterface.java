@@ -7,12 +7,7 @@ import java.util.Map;
  */
 public interface ISimilarityInterface {
 
-    public double calculate(HashMap<Integer, Preference> targetUser, HashMap<Integer, Preference> compare_user);
+    public double calculate(HashMap<Integer, Preference> targetUser, HashMap<Integer, Preference> compareUser);
 }
 
 
-public class Cosine implements ISimilarityInterface{
-    public double calculate(HashMap<Integer, Preference> targetUser, HashMap<Integer, Preference> compare_user){
-
-    }
-}
