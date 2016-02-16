@@ -17,7 +17,11 @@ public class Pearson implements ISimilarityInterface{
             Map.Entry keyValue = (Map.Entry)targetPreferences.next();
 
             Preference targetPreference = (Preference) keyValue.getValue();
-            Preference comparePreference = (Preference) compareUser.get(targetPreference.subject);
+            Preference comparePreference = compareUser.get(targetPreference.subject);
+
+            if (comparePreference == null){
+                continue;
+            }
 
             targetRatingSum += targetPreference.rating;
             compareRatingSum += comparePreference.rating;
