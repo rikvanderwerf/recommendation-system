@@ -18,7 +18,7 @@ public class Cosine implements ISimilarityInterface{
             Preference comparePreference = compareUser.get(targetPreference.subject);
 
             if (comparePreference == null){
-                continue;
+                comparePreference = new Preference(0, targetPreference.subject);
             }
 
             sumMultiplicationRatings += (targetPreference.rating * comparePreference.rating);

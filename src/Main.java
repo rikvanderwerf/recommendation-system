@@ -21,7 +21,6 @@ public class Main {
             System.out.println(e);
         }
         System.out.println(userPreferences.get(1));
-
     }
 
     private static void openFile(String path) throws IOException {
