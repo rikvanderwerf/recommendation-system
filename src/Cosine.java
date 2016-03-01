@@ -24,11 +24,9 @@ public class Cosine implements ISimilarityInterface{
             sumMultiplicationRatings += (targetPreference.rating * comparePreference.rating);
             targetPreferencePowSum += Math.pow(targetPreference.rating, 2);
             comparePreferencePowSum += Math.pow(comparePreference.rating, 2);
-
-            targetPreferences.remove();
         }
 
-        similarity = sumMultiplicationRatings / (targetPreferencePowSum * comparePreferencePowSum);
+        similarity = sumMultiplicationRatings / (Math.sqrt(targetPreferencePowSum) * Math.sqrt(comparePreferencePowSum));
         return similarity;
     }
 }

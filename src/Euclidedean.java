@@ -18,8 +18,6 @@ public class Euclidedean implements ISimilarityInterface{
             }
 
             similarity += Math.pow((targetPreference.rating - comparePreference.rating), 2);
-
-            targetPreferences.remove();
         }
 
         return Math.sqrt(similarity);

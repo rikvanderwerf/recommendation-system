@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -6,37 +7,50 @@ import java.util.*;
 public class RecommendationClient {
 
     ISimilarityInterface similarityAlgoritm;
-    List<List<Double>> similarityList;
+    ArrayList<ArrayList<Double>> similarityList = new ArrayList<ArrayList<Double>>();
+
 
     public RecommendationClient(ISimilarityInterface similarityAlgoritm) {
         this.similarityAlgoritm = similarityAlgoritm;
     }
 
-    public double calculateSimularity(int targetUserId,
+    public ArrayList<ArrayList<Double>> calculateSimilarity(int targetUserId,
                                       HashMap<Integer, HashMap<Integer,Preference>> userPreferences,
                                       int maximumNeighbourListSize,
-                                      double minimumSimularity) {
-
+                                      double minimumSimilarity) {
+        ArrayList<Integer> usefulUsers = new ArrayList<Integer>();
         HashMap<Integer, Preference> targetUserPreferences = userPreferences.get(targetUserId);
         userPreferences.remove(targetUserId);
+
         Iterator userPreferencerIterator = userPreferences.entrySet().iterator();
 
         while (userPreferencerIterator.hasNext()) {
+            boolean usefulUser = false;
             Map.Entry keyValue = (Map.Entry) userPreferencerIterator.next();
-
             HashMap<Integer, Preference> userPreference = (HashMap<Integer, Preference>) keyValue.getValue();
 
+            for (Preference preference : userPreference.values()) {
+                if (targetUserPreferences.get(preference.subject) == null) {
+                    usefulUser = true; //User has a new preference to offer and is therefore relevant.
+                }
+            }
+
+            if (!usefulUser){
+                continue;
+            }
+
+            System.out.println(keyValue.getKey());
             double similarity = similarityAlgoritm.calculate(targetUserPreferences, userPreference);
 
-            if (similarity >= minimumSimularity) {
-
-                // to do : check if compared user actually has a new preference compared to the target user.
-
+            if (similarity >= minimumSimilarity) {
+                ArrayList<Double> userSimilarityList = new ArrayList<Double>();
+                userSimilarityList.add(Double.parseDouble(keyValue.getKey().toString()));
+                userSimilarityList.add(similarity);
                 if (similarityList.size() < maximumNeighbourListSize) {
-                    similarityList.add(Arrays.asList((Double) keyValue.getKey(), similarity));
+                    similarityList.add(userSimilarityList);
 
                 } else if(similarityList.get(0).get(1) < similarity) {
-                    similarityList.set(0, Arrays.asList((Double) keyValue.getKey(), similarity));
+                    similarityList.set(0, userSimilarityList);
 
                 } else{
                     continue;
@@ -51,10 +65,8 @@ public class RecommendationClient {
                     }
                 });
             }
-
-            userPreferencerIterator.remove();
-
         }
+        return similarityList;
     }
 
 

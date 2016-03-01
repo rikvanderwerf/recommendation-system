@@ -21,6 +21,13 @@ public class Main {
             System.out.println(e);
         }
         System.out.println(userPreferences.get(1));
+
+        RecommendationClient pearsonClient = new RecommendationClient(new Pearson());
+        RecommendationClient cosineClient = new RecommendationClient(new Cosine());
+        RecommendationClient EuclidedeanClient = new RecommendationClient(new Euclidedean());
+        // System.out.println(pearsonClient.calculateSimilarity(7, userPreferences, 3, 0));
+        System.out.println(cosineClient.calculateSimilarity(7, userPreferences, 3, 0));
+        // System.out.println(EuclidedeanClient.calculateSimilarity(7, userPreferences, 3, 0));
     }
 
     private static void openFile(String path) throws IOException {
@@ -39,6 +46,6 @@ public class Main {
     }
 
     private static void buildDict(User user, Preference preference) {
-        userPreferences.putList(user.id, preference);
+        userPreferences.putMap(user.id, preference);
     }
 }
