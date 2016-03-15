@@ -39,7 +39,6 @@ public class Pearson implements ISimilarityInterface{
         double leftLowerEquation = Math.sqrt(targetPowSum - (Math.pow(targetRatingSum, 2) / targetPreferencesSize));
         double rightLowerEquation = Math.sqrt(comparePowSum - (Math.pow(compareRatingSum, 2) / targetPreferencesSize));
         similarity = upperEquation / (leftLowerEquation * rightLowerEquation);
-
         return similarity;
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Main {
 
-    static UserPreferences<Integer, HashMap<Integer, Preference>> userPreferences = new UserPreferences<Integer, HashMap<Integer, Preference>>(
+    UserPreferences<Integer, HashMap<Integer, Preference>> userPreferences = new UserPreferences<Integer, HashMap<Integer, Preference>>(
             new HashMap<Integer, Preference>()
     );
 
@@ -20,14 +20,15 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println(userPreferences.get(1));
 
         RecommendationClient pearsonClient = new RecommendationClient(new Pearson());
         RecommendationClient cosineClient = new RecommendationClient(new Cosine());
         RecommendationClient EuclidedeanClient = new RecommendationClient(new Euclidedean());
-        // System.out.println(pearsonClient.calculateSimilarity(7, userPreferences, 3, 0));
-        System.out.println(cosineClient.calculateSimilarity(7, userPreferences, 3, 0));
-        // System.out.println(EuclidedeanClient.calculateSimilarity(7, userPreferences, 3, 0));
+
+        // e.1
+        System.out.println(pearsonClient.calculateSimilarity(7, userPreferences, 3, 0.35));
+        System.out.println(cosineClient.calculateSimilarity(7, userPreferences, 3, 0.35));
+        System.out.println(EuclidedeanClient.calculateSimilarity(7, userPreferences, 3, 0.35));
     }
 
     private static void openFile(String path) throws IOException {

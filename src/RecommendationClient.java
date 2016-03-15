@@ -20,13 +20,14 @@ public class RecommendationClient {
                                       double minimumSimilarity) {
         ArrayList<Integer> usefulUsers = new ArrayList<Integer>();
         HashMap<Integer, Preference> targetUserPreferences = userPreferences.get(targetUserId);
-        userPreferences.remove(targetUserId);
+        HashMap<Integer, HashMap<Integer,Preference>> userPreferencesCopy = userPreferences;
+        userPreferencesCopy.remove(targetUserId);
 
-        Iterator userPreferencerIterator = userPreferences.entrySet().iterator();
-
-        while (userPreferencerIterator.hasNext()) {
+        Iterator userPreferenceIterator = userPreferencesCopy.entrySet().iterator();
+        System.out.println(userPreferences.get(targetUserId));
+        while (userPreferenceIterator.hasNext()) {
             boolean usefulUser = false;
-            Map.Entry keyValue = (Map.Entry) userPreferencerIterator.next();
+            Map.Entry keyValue = (Map.Entry) userPreferenceIterator.next();
             HashMap<Integer, Preference> userPreference = (HashMap<Integer, Preference>) keyValue.getValue();
 
             for (Preference preference : userPreference.values()) {
@@ -34,12 +35,10 @@ public class RecommendationClient {
                     usefulUser = true; //User has a new preference to offer and is therefore relevant.
                 }
             }
-
             if (!usefulUser){
                 continue;
             }
 
-            System.out.println(keyValue.getKey());
             double similarity = similarityAlgoritm.calculate(targetUserPreferences, userPreference);
 
             if (similarity >= minimumSimilarity) {
