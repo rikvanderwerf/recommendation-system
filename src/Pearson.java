@@ -15,6 +15,7 @@ public class Pearson implements ISimilarityInterface{
 
         Integer targetPreferencesSize = targetUser.size();
 
+        // iterate of the target preferences
         while (targetPreferences.hasNext()){
             Map.Entry keyValue = (Map.Entry)targetPreferences.next();
 

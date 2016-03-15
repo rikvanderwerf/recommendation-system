@@ -17,6 +17,8 @@ public class Cosine implements ISimilarityInterface{
             Preference targetPreference = (Preference) keyValue.getValue();
             Preference comparePreference = compareUser.get(targetPreference.subject);
 
+            // if we can not find the target's preference in the preference of the user we're comparing to
+            // we create a new preference with the rating of 0 to fill in the blank
             if (comparePreference == null){
                 comparePreference = new Preference(0, targetPreference.subject);
             }

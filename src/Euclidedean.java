@@ -7,12 +7,15 @@ public class Euclidedean implements ISimilarityInterface{
         Iterator targetPreferences = targetUser.entrySet().iterator();
         float similarity = 0;
 
+        // iterate through target preferences
         while (targetPreferences.hasNext()){
             Map.Entry keyValue = (Map.Entry)targetPreferences.next();
 
             Preference targetPreference = (Preference) keyValue.getValue();
             Preference comparePreference = compareUser.get(targetPreference.subject);
 
+            // if the preference (rating) can not be found in the preferences of the user we're comparing to
+            // we continue to the next iteration
             if (comparePreference == null) {
                 continue;
             }

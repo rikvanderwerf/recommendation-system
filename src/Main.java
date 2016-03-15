@@ -21,14 +21,18 @@ public class Main {
             System.out.println(e);
         }
 
+        System.out.println(userPreferences);
+
         RecommendationClient pearsonClient = new RecommendationClient(new Pearson());
         RecommendationClient cosineClient = new RecommendationClient(new Cosine());
         RecommendationClient EuclidedeanClient = new RecommendationClient(new Euclidedean());
 
         // e.1
-        System.out.println(pearsonClient.calculateSimilarity(7, userPreferences, 3, 0.35));
-        System.out.println(cosineClient.calculateSimilarity(7, userPreferences, 3, 0.35));
-        System.out.println(EuclidedeanClient.calculateSimilarity(7, userPreferences, 3, 0.35));
+        ArrayList neighbours = pearsonClient.calculateSimilarity(7, userPreferences, 3, 0);
+        System.out.println(pearsonClient.calculateRating(neighbours, 101));
+        System.out.println(pearsonClient.calculateRating(neighbours, 103));
+        //System.out.println(cosineClient.calculateSimilarity(7, userPreferences, 3, 0.35));
+        //System.out.println(EuclidedeanClient.calculateSimilarity(2, userPreferences, 3, 0.25));
     }
 
     private static void openFile(String path) throws IOException {
