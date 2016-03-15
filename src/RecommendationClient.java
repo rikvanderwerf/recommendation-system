@@ -20,11 +20,9 @@ public class RecommendationClient {
                                       double minimumSimilarity) {
         ArrayList<Integer> usefulUsers = new ArrayList<Integer>();
         HashMap<Integer, Preference> targetUserPreferences = userPreferences.get(targetUserId);
-        HashMap<Integer, HashMap<Integer,Preference>> userPreferencesCopy = userPreferences;
-        userPreferencesCopy.remove(targetUserId);
+        userPreferences.remove(targetUserId);
 
-        Iterator userPreferenceIterator = userPreferencesCopy.entrySet().iterator();
-        System.out.println(userPreferences.get(targetUserId));
+        Iterator userPreferenceIterator = userPreferences.entrySet().iterator();
         while (userPreferenceIterator.hasNext()) {
             boolean usefulUser = false;
             Map.Entry keyValue = (Map.Entry) userPreferenceIterator.next();
@@ -65,6 +63,8 @@ public class RecommendationClient {
                 });
             }
         }
+        // add the target user to the scope again
+        userPreferences.put(targetUserId, targetUserPreferences);
         return similarityList;
     }
 

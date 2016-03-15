@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Main {
 
-    UserPreferences<Integer, HashMap<Integer, Preference>> userPreferences = new UserPreferences<Integer, HashMap<Integer, Preference>>(
+    static UserPreferences<Integer, HashMap<Integer, Preference>> userPreferences = new UserPreferences<Integer, HashMap<Integer, Preference>>(
             new HashMap<Integer, Preference>()
     );
 
