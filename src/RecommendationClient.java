@@ -80,9 +80,10 @@ public class RecommendationClient {
         return similarityList;
     }
 
-    public double calculateRating(ArrayList nearestNeighbours, int subjectID) {
+    public Double calculateRating(ArrayList nearestNeighbours, int subjectID, int minOccurences) {
         Double totalSimilarity = 0.0;
         Double totalWeight = 0.0;
+        Integer occurenceCounter = 0;
         Iterator<ArrayList<Double>> neighbourIterator = nearestNeighbours.iterator();
 
 
@@ -95,12 +96,57 @@ public class RecommendationClient {
                         subjectID);
                 totalSimilarity += neighbourSimilarity;
                 totalWeight += neighbourSimilarity * neighbourRating;
+                occurenceCounter++;
             } catch(NullPointerException e){
                 // if the subject isn't found, skip
                 continue;
             }
         }
+
+        if(occurenceCounter < minOccurences){
+            return null;
+        }
         return totalWeight / totalSimilarity;
+    }
+
+    public ArrayList<ArrayList<Double>> calculateRatings(ArrayList nearestNeighbours, ArrayList subjects, Integer amount,
+                                                         Integer minOccurences) {
+        ArrayList<ArrayList<Double>> subjectRatings = new ArrayList<ArrayList<Double>>();
+        Iterator<Integer> subjectIterator = subjects.iterator();
+
+        while (subjectIterator.hasNext()) {
+            Integer subjectID = subjectIterator.next();
+            Double  rating = calculateRating(nearestNeighbours, subjectID, minOccurences);
+            if(rating == null){
+                // No rating found, skip subject
+                continue;
+            }
+
+            ArrayList<Double> subjectRating = new ArrayList<Double>();
+            subjectRating.add(Double.parseDouble(subjectID.toString()));
+            subjectRating.add(rating);
+
+            // if the list if not full yet, always insert
+            if(subjectRatings.size() < amount){
+                subjectRatings.add(subjectRating);
+                // if the current rating is bigger than the smallest rating on the list, replace
+            } else if(subjectRatings.get(0).get(1) < rating){
+                subjectRatings.set(0, subjectRating);
+                // we're not inserting so no need to sort the list
+            } else {
+                continue;
+            }
+
+            // sort the subject rating list based on rating value. Only if mutated! #zombie
+            Collections.sort(subjectRatings, new Comparator<List<Double>>() {
+                public int compare(List<Double> o1, List<Double> o2)
+                {
+                    return o1.get(1).compareTo(o2.get(1));
+                }
+            });
+        }
+
+        return subjectRatings;
     }
 
     private double getNeighbourRating(HashMap<Integer, Preference> neighbourPreferences, Integer subjectID){
