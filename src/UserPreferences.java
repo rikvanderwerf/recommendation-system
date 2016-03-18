@@ -10,10 +10,18 @@ public class UserPreferences<K,V> extends HashMap<K,V> {
         this.defaultValue = defaultValue;
     }
 
-    public void putList(K k, Preference v) {
-        HashMap<Integer, Preference> listValue = this.defaultValue;
-        listValue.put(v.subject, v);
-        V value = (V) listValue;
+    public void putMap(K k, Preference v) {
+        // find the key in the dictionary
+        HashMap<Integer, Preference> preferenceMapping = (HashMap<Integer, Preference>) this.get(k);
+
+        // if the key doesn't exist create a default HashMap
+        if (preferenceMapping == null){
+            preferenceMapping = new HashMap<Integer, Preference>();
+        }
+
+        //add the value to the HashMap
+        preferenceMapping.put(v.subject, v);
+        V value = (V) preferenceMapping;
         super.put(k, value);
     }
 }

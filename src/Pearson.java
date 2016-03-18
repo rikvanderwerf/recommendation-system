@@ -13,6 +13,9 @@ public class Pearson implements ISimilarityInterface{
         double targetPowSum = 0;
         double comparePowSum = 0;
 
+        Integer targetPreferencesSize = targetUser.size();
+
+        // iterate of the target preferences
         while (targetPreferences.hasNext()){
             Map.Entry keyValue = (Map.Entry)targetPreferences.next();
 
@@ -20,6 +23,7 @@ public class Pearson implements ISimilarityInterface{
             Preference comparePreference = compareUser.get(targetPreference.subject);
 
             if (comparePreference == null){
+                targetPreferencesSize -= 1;
                 continue;
             }
 
@@ -30,16 +34,12 @@ public class Pearson implements ISimilarityInterface{
             comparePowSum += Math.pow(comparePreference.rating, 2);
 
             iterationSum += (targetPreference.rating * comparePreference.rating);
-
-            targetPreferences.remove();
         }
-
-        totalSum = (targetRatingSum + compareRatingSum) / targetUser.size();
+        totalSum = (targetRatingSum * compareRatingSum) / targetPreferencesSize;
         double upperEquation = iterationSum - totalSum;
-        double leftLowerEquation = Math.sqrt(targetPowSum - (Math.pow(targetRatingSum, 2) / targetUser.size()));
-        double rightLowerEquation = Math.sqrt(comparePowSum - (Math.pow(compareRatingSum, 2) / targetUser.size()));
+        double leftLowerEquation = Math.sqrt(targetPowSum - (Math.pow(targetRatingSum, 2) / targetPreferencesSize));
+        double rightLowerEquation = Math.sqrt(comparePowSum - (Math.pow(compareRatingSum, 2) / targetPreferencesSize));
         similarity = upperEquation / (leftLowerEquation * rightLowerEquation);
-
         return similarity;
     }
 }

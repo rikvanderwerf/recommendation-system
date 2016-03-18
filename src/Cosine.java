@@ -17,18 +17,18 @@ public class Cosine implements ISimilarityInterface{
             Preference targetPreference = (Preference) keyValue.getValue();
             Preference comparePreference = compareUser.get(targetPreference.subject);
 
+            // if we can not find the target's preference in the preference of the user we're comparing to
+            // we create a new preference with the rating of 0 to fill in the blank
             if (comparePreference == null){
-                continue;
+                comparePreference = new Preference(0, targetPreference.subject);
             }
 
             sumMultiplicationRatings += (targetPreference.rating * comparePreference.rating);
             targetPreferencePowSum += Math.pow(targetPreference.rating, 2);
             comparePreferencePowSum += Math.pow(comparePreference.rating, 2);
-
-            targetPreferences.remove();
         }
 
-        similarity = sumMultiplicationRatings / (targetPreferencePowSum * comparePreferencePowSum);
+        similarity = sumMultiplicationRatings / (Math.sqrt(targetPreferencePowSum) * Math.sqrt(comparePreferencePowSum));
         return similarity;
     }
 }
