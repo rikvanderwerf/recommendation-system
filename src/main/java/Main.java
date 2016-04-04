@@ -26,8 +26,9 @@ public class Main {
             System.out.println(e);
         }
 
-        SlopeOne slopeOneClient = new SlopeOne();
+        SlopeOne slopeOneClient = new SlopeOne(userPreferences);
         slopeOneClient.computeDeviations(itemUsersMapping);
+        System.out.println(slopeOneClient.computeRecomendations(userPreferences.get(186), subjectList, 5));
 
         //RecommendationClient pearsonClient = new RecommendationClient(new Pearson());
         //RecommendationClient cosineClient = new RecommendationClient(new Cosine());
@@ -52,6 +53,7 @@ public class Main {
             Preference userPreference = new Preference(Double.parseDouble(data[2]), subjectID);
             buildUserDict(new User(userID), userPreference);
             itemUsersMapping.putMap(subjectID, userID, userPreference);
+            subjectList.add(subjectID);
         }
         // Make sure each subject exist only once
         subjectList = new ArrayList<Integer>(new LinkedHashSet<Integer>(subjectList));
