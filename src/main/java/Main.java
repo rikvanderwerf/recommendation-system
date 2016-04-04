@@ -14,6 +14,9 @@ public class Main {
     static UserPreferences<Integer, HashMap<Integer, Preference>> userPreferences = new UserPreferences<Integer, HashMap<Integer, Preference>>(
             new HashMap<Integer, Preference>()
     );
+    static UserPreferences<Integer, HashMap<Integer,Preference>> itemUsersMapping = new UserPreferences<Integer, HashMap<Integer, Preference>>(
+            new HashMap<Integer, Preference>()
+    );
     static ArrayList<Integer> subjectList = new ArrayList<Integer>();
 
     public static void main(String[] args) {
@@ -23,15 +26,16 @@ public class Main {
             System.out.println(e);
         }
 
-        System.out.println(userPreferences);
+        SlopeOne slopeOneClient = new SlopeOne();
+        slopeOneClient.computeDeviations(itemUsersMapping);
 
-        RecommendationClient pearsonClient = new RecommendationClient(new Pearson());
+        //RecommendationClient pearsonClient = new RecommendationClient(new Pearson());
         //RecommendationClient cosineClient = new RecommendationClient(new Cosine());
         //RecommendationClient EuclidedeanClient = new RecommendationClient(new Euclidedean());
 
         // e.1
-        ArrayList neighbours = pearsonClient.calculateSimilarity(186, userPreferences, 25, 0.35);
-        System.out.println(pearsonClient.calculateRatings(neighbours, subjectList, 8, 3));
+        //ArrayList neighbours = pearsonClient.calculateSimilarity(186, userPreferences, 25, 0.35);
+        //System.out.println(pearsonClient.calculateRatings(neighbours, subjectList, 8, 3));
         //System.out.println(cosineClient.calculateSimilarity(7, userPreferences, 3, 0.35));
         //System.out.println(EuclidedeanClient.calculateSimilarity(2, userPreferences, 3, 0.25));
     }
@@ -42,20 +46,19 @@ public class Main {
 
         String line;
         while ((line = textReader.readLine()) != null) {
-            String[] data = line.split("\\s+");
+            String[] data = line.split("\\s");
             Integer subjectID = Integer.parseInt(data[1]);
-            buildDict(new User(Integer.parseInt(data[0])),
-                    new Preference(Double.parseDouble(data[2]),
-                            subjectID)
-            );
-            subjectList.add(subjectID);
+            Integer userID = Integer.parseInt(data[0]);
+            Preference userPreference = new Preference(Double.parseDouble(data[2]), subjectID);
+            buildUserDict(new User(userID), userPreference);
+            itemUsersMapping.putMap(subjectID, userID, userPreference);
         }
         // Make sure each subject exist only once
         subjectList = new ArrayList<Integer>(new LinkedHashSet<Integer>(subjectList));
         textReader.close();
     }
 
-    private static void buildDict(User user, Preference preference) {
-        userPreferences.putMap(user.id, preference);
+    private static void buildUserDict(User user, Preference preference) {
+        userPreferences.putMap(user.id, preference.subject,preference);
     }
 }

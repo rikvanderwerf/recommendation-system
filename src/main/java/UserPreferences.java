@@ -10,7 +10,7 @@ public class UserPreferences<K,V> extends HashMap<K,V> {
         this.defaultValue = defaultValue;
     }
 
-    public void putMap(K k, Preference v) {
+    public void putMap(K k, Integer nestedKey, Preference v) {
         // find the key in the dictionary
         HashMap<Integer, Preference> preferenceMapping = (HashMap<Integer, Preference>) this.get(k);
 
@@ -20,7 +20,7 @@ public class UserPreferences<K,V> extends HashMap<K,V> {
         }
 
         //add the value to the HashMap
-        preferenceMapping.put(v.subject, v);
+        preferenceMapping.put(nestedKey, v);
         V value = (V) preferenceMapping;
         super.put(k, value);
     }
