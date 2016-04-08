@@ -25,12 +25,13 @@ public class SlopeOne {
         Integer subjectID2 = subjectUserEntry2.getKey();
         Iterator users = userMapping1.entrySet().iterator();
 
-
+        // Iterate through all users that have rated subject 1
         while (users.hasNext()){
             Map.Entry keyValue = (Map.Entry)users.next();
             Preference preferenceUser1 = (Preference) keyValue.getValue();
             Preference preferenceUser2 = userMapping2.get(keyValue.getKey());
 
+            // If the user hasn't rated subject 2 we should not compute the deviation
             if (preferenceUser2 == null){
                 continue;
             }
@@ -39,6 +40,7 @@ public class SlopeOne {
             totalUsersRated++;
         }
 
+        // No users have rated both items so we don't have any data to compute the deviation
         if(totalUsersRated == 0){
             return;
         }
@@ -51,6 +53,7 @@ public class SlopeOne {
     public void computeDeviations(UserPreferences<Integer, HashMap<Integer,Preference>> itemUsersMapping){
         Iterator items = itemUsersMapping.entrySet().iterator();
 
+        // loop through all available items and compute their deviations
         while(items.hasNext()){
             Map.Entry itemEntry = (Map.Entry)items.next();
             Iterator comparableItems = itemUsersMapping.entrySet().iterator();
@@ -67,10 +70,16 @@ public class SlopeOne {
         Double computationResult = 0.0;
         Iterator targetUserPreferences = targetUser.entrySet().iterator();
 
+        // loop through all items the target user has rated
         while(targetUserPreferences.hasNext()){
             Map.Entry keyValue = (Map.Entry)targetUserPreferences.next();
             Preference userPreference = (Preference) keyValue.getValue();
             Deviation deviation = deviationTable.get(subjectID, userPreference.subject);
+
+            // the deviation was not compute due to lack of users rating both items
+            if(deviation == null){
+                continue;
+            }
             computationResult += (userPreference.rating + deviation.getDeviationValue()) * deviation.getTotalUsersRated();
             totalUserSum += deviation.getTotalUsersRated();
         }
@@ -82,6 +91,7 @@ public class SlopeOne {
         Iterator<Integer> subjectIterator = subjects.iterator();
         ArrayList<ArrayList<Double>> subjectRatings = new ArrayList<ArrayList<Double>>();
 
+        // loop through all subjects and compute the user's predicted rating for said item
         while(subjectIterator.hasNext()){
             Integer subjectID = subjectIterator.next();
 
@@ -117,17 +127,24 @@ public class SlopeOne {
     public void updateDeviation(Integer userID, Integer subjectID, Double rating){
         Iterator targerUserPreferences = userPreferences.get(userID).entrySet().iterator();
 
+        // iterate through target user's rated items
         while(targerUserPreferences.hasNext()){
             Map.Entry keyValue = (Map.Entry)targerUserPreferences.next();
             Preference targetUserPreference = (Preference) keyValue.getValue();
+
+            //get the current deviation between the target item and item the user has already rated
             Deviation currentDeviation = deviationTable.get(subjectID, targetUserPreference.subject);
             Double numerator = (currentDeviation.getDeviationValue() * currentDeviation.getTotalUsersRated()) + (rating - targetUserPreference.rating);
 
+            //since one more user has rated both items the total user count should be increased
             currentDeviation.setTotalUsersRated(currentDeviation.getTotalUsersRated() + 1);
             currentDeviation.setDeviationValue(numerator / currentDeviation.getTotalUsersRated());
 
+            //update the deviation value in the matrix
             deviationTable.put(subjectID, targetUserPreference.subject, currentDeviation);
             currentDeviation.setDeviationValue(currentDeviation.getDeviationValue() * -1);
+
+            //the reverse deviation should always be the negative value of the deviation
             deviationTable.put(targetUserPreference.subject, subjectID, currentDeviation);
         }
     }

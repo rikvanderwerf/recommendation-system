@@ -28,7 +28,10 @@ public class Main {
 
         SlopeOne slopeOneClient = new SlopeOne(userPreferences);
         slopeOneClient.computeDeviations(itemUsersMapping);
+        long start = System.nanoTime();
         System.out.println(slopeOneClient.computeRecomendations(userPreferences.get(186), subjectList, 5));
+        System.out.println("Performance:");
+        System.out.println((System.nanoTime() - start) / 1000000);
 
         //RecommendationClient pearsonClient = new RecommendationClient(new Pearson());
         //RecommendationClient cosineClient = new RecommendationClient(new Cosine());
